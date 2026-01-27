@@ -39,9 +39,13 @@ import {
 } from '@affine/core/modules/workspace';
 import { configureBrowserWorkspaceFlavours } from '@affine/core/modules/workspace-engine';
 import { getWorkerUrl } from '@affine/env/worker';
-import { refreshSubscriptionMutation } from '@affine/graphql';
+import {
+  refreshSubscriptionMutation,
+  requestApplySubscriptionMutation,
+} from '@affine/graphql';
 import { I18n } from '@affine/i18n';
 import { StoreManagerClient } from '@affine/nbstore/worker/client';
+import { setTelemetryTransport } from '@affine/track';
 import { Container } from '@blocksuite/affine/global/di';
 import {
   docLinkBaseURLMiddleware,
@@ -71,6 +75,7 @@ import { writeEndpointToken } from './proxy';
 import { enableNavigationGesture$ } from './web-navigation-control';
 
 const storeManagerClient = createStoreManagerClient();
+setTelemetryTransport(storeManagerClient.telemetry);
 window.addEventListener('beforeunload', () => {
   storeManagerClient.dispose();
 });
@@ -236,6 +241,16 @@ const frameworkProvider = framework.provider();
   const globalContextService = frameworkProvider.get(GlobalContextService);
   return globalContextService.globalContext.docId.get();
 };
+(window as any).getCurrentUserIdentifier = () => {
+  const globalContextService = frameworkProvider.get(GlobalContextService);
+  const currentServerId = globalContextService.globalContext.serverId.get();
+  const serversService = frameworkProvider.get(ServersService);
+  const defaultServerService = frameworkProvider.get(DefaultServerService);
+  const currentServer =
+    (currentServerId ? serversService.server$(currentServerId).value : null) ??
+    defaultServerService.server;
+  return currentServer.account$.value?.id;
+};
 (window as any).getCurrentDocContentInMarkdown = async () => {
   const globalContextService = frameworkProvider.get(GlobalContextService);
   const currentWorkspaceId =
@@ -248,6 +263,7 @@ const frameworkProvider = framework.provider();
   if (!workspaceRef) {
     return;
   }
+
   const { workspace, dispose: disposeWorkspace } = workspaceRef;
 
   const docsService = workspace.scope.get(DocsService);
@@ -356,6 +372,23 @@ const frameworkProvider = framework.provider();
   await currentServer
     .gql({
       query: refreshSubscriptionMutation,
+    })
+    .catch(console.error);
+  const subscriptionService = currentServer.scope.get(SubscriptionService);
+  subscriptionService.subscription.revalidate();
+};
+(window as any).requestApplySubscription = async (transactionId: string) => {
+  const globalContextService = frameworkProvider.get(GlobalContextService);
+  const currentServerId = globalContextService.globalContext.serverId.get();
+  const serversService = frameworkProvider.get(ServersService);
+  const defaultServerService = frameworkProvider.get(DefaultServerService);
+  const currentServer =
+    (currentServerId ? serversService.server$(currentServerId).value : null) ??
+    defaultServerService.server;
+  await currentServer
+    .gql({
+      query: requestApplySubscriptionMutation,
+      variables: { transactionId },
     })
     .catch(console.error);
   const subscriptionService = currentServer.scope.get(SubscriptionService);

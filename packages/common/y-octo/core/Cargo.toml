@@ -6,7 +6,7 @@ authors = [
   "Brooklyn <lynweklm@gmail.com>",
 ]
 description = "High-performance and thread-safe CRDT implementation compatible with Yjs"
-edition = "2021"
+edition = "2024"
 homepage = "https://github.com/toeverything/y-octo"
 include = ["src/**/*", "benches/**/*", "bin/**/*", "LICENSE", "README.md"]
 keywords = ["collaboration", "crdt", "crdts", "yjs", "yata"]
@@ -14,15 +14,13 @@ license = "MIT"
 name = "y-octo"
 readme = "README.md"
 repository = "https://github.com/toeverything/y-octo"
-version = "0.0.1"
+version = "0.0.2"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 ahash         = { workspace = true }
-bitvec        = { workspace = true }
 byteorder     = { workspace = true }
-lasso         = { workspace = true }
 log           = { workspace = true }
 nanoid        = { workspace = true }
 nom           = { workspace = true }
@@ -38,8 +36,11 @@ thiserror     = { workspace = true }
 [features]
 bench      = []
 debug      = []
+default    = []
+events     = []
 large_refs = []
 serde_json = []
+subscribe  = []
 
 [target.'cfg(fuzzing)'.dependencies]
 arbitrary     = { workspace = true }

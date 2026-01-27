@@ -37,7 +37,13 @@ type ConfigGroup<T extends AppConfigModule> = {
 const IGNORED_MODULES: (keyof AppConfig)[] = [];
 
 if (environment.isSelfHosted) {
-  IGNORED_MODULES.push('payment');
+  IGNORED_MODULES.push(
+    'payment',
+    'customerIo',
+    'captcha',
+    'telemetry',
+    'metrics'
+  );
 }
 
 const ALL_CONFIGURABLE_MODULES = Object.keys(CONFIG_DESCRIPTORS).filter(
@@ -75,6 +81,7 @@ export const KNOWN_CONFIG_GROUPS = [
     name: 'Notification',
     module: 'mailer',
     fields: [
+      'SMTP.name',
       'SMTP.host',
       'SMTP.port',
       'SMTP.username',

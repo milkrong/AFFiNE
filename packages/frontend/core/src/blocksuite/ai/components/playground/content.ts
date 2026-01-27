@@ -1,4 +1,10 @@
 import type { AIToolsConfigService } from '@affine/core/modules/ai-button';
+import type { AIModelService } from '@affine/core/modules/ai-button/services/models';
+import type {
+  ServerService,
+  SubscriptionService,
+} from '@affine/core/modules/cloud';
+import type { WorkspaceDialogService } from '@affine/core/modules/dialogs';
 import type { FeatureFlagService } from '@affine/core/modules/feature-flag';
 import type { AppThemeService } from '@affine/core/modules/theme';
 import type { CopilotChatHistoryFragment } from '@affine/graphql';
@@ -15,11 +21,7 @@ import type { AppSidebarConfig } from '../../chat-panel/chat-config';
 import { AIProvider } from '../../provider';
 import type { SearchMenuConfig } from '../ai-chat-add-context';
 import type { DocDisplayConfig } from '../ai-chat-chips';
-import type {
-  AINetworkSearchConfig,
-  AIPlaygroundConfig,
-  AIReasoningConfig,
-} from '../ai-chat-input';
+import type { AIPlaygroundConfig, AIReasoningConfig } from '../ai-chat-input';
 
 export class PlaygroundContent extends SignalWatcher(
   WithDisposable(ShadowlessElement)
@@ -64,9 +66,6 @@ export class PlaygroundContent extends SignalWatcher(
   accessor doc!: Store;
 
   @property({ attribute: false })
-  accessor networkSearchConfig!: AINetworkSearchConfig;
-
-  @property({ attribute: false })
   accessor reasoningConfig!: AIReasoningConfig;
 
   @property({ attribute: false })
@@ -85,6 +84,9 @@ export class PlaygroundContent extends SignalWatcher(
   accessor extensions!: ExtensionType[];
 
   @property({ attribute: false })
+  accessor serverService!: ServerService;
+
+  @property({ attribute: false })
   accessor affineFeatureFlagService!: FeatureFlagService;
 
   @property({ attribute: false })
@@ -95,6 +97,15 @@ export class PlaygroundContent extends SignalWatcher(
 
   @property({ attribute: false })
   accessor aiToolsConfigService!: AIToolsConfigService;
+
+  @property({ attribute: false })
+  accessor affineWorkspaceDialogService!: WorkspaceDialogService;
+
+  @property({ attribute: false })
+  accessor subscriptionService!: SubscriptionService;
+
+  @property({ attribute: false })
+  accessor aiModelService!: AIModelService;
 
   @state()
   accessor sessions: CopilotChatHistoryFragment[] = [];
@@ -293,9 +304,11 @@ export class PlaygroundContent extends SignalWatcher(
       }
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     button.addEventListener('click', handleSendClick);
 
     this._disposables.add(() => {
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       button.removeEventListener('click', handleSendClick);
     });
   }
@@ -341,17 +354,21 @@ export class PlaygroundContent extends SignalWatcher(
                 .host=${this.host}
                 .doc=${this.doc}
                 .session=${session}
-                .networkSearchConfig=${this.networkSearchConfig}
                 .reasoningConfig=${this.reasoningConfig}
                 .playgroundConfig=${this.playgroundConfig}
                 .appSidebarConfig=${this.appSidebarConfig}
                 .searchMenuConfig=${this.searchMenuConfig}
                 .docDisplayConfig=${this.docDisplayConfig}
                 .extensions=${this.extensions}
+                .serverService=${this.serverService}
                 .affineFeatureFlagService=${this.affineFeatureFlagService}
                 .affineThemeService=${this.affineThemeService}
                 .notificationService=${this.notificationService}
                 .aiToolsConfigService=${this.aiToolsConfigService}
+                .affineWorkspaceDialogService=${this
+                  .affineWorkspaceDialogService}
+                .subscriptionService=${this.subscriptionService}
+                .aiModelService=${this.aiModelService}
                 .addChat=${this.addChat}
               ></playground-chat>
             </div>

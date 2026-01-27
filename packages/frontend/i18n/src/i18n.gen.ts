@@ -868,6 +868,37 @@ export function useAFFiNEI18N(): {
       */
     ["com.affine.ai.template-insert.failed"](): string;
     /**
+      * `AFFiNE AI`
+      */
+    ["com.affine.ai.chat-panel.title"](): string;
+    /**
+      * `AFFiNE AI is loading history...`
+      */
+    ["com.affine.ai.chat-panel.loading-history"](): string;
+    /**
+      * `Embedding {{done}}/{{total}}`
+      */
+    ["com.affine.ai.chat-panel.embedding-progress"](options: Readonly<{
+        done: string;
+        total: string;
+    }>): string;
+    /**
+      * `Delete this history?`
+      */
+    ["com.affine.ai.chat-panel.session.delete.confirm.title"](): string;
+    /**
+      * `Do you want to delete this AI conversation history? Once deleted, it cannot be recovered.`
+      */
+    ["com.affine.ai.chat-panel.session.delete.confirm.message"](): string;
+    /**
+      * `History deleted`
+      */
+    ["com.affine.ai.chat-panel.session.delete.toast.success"](): string;
+    /**
+      * `Failed to delete history`
+      */
+    ["com.affine.ai.chat-panel.session.delete.toast.failed"](): string;
+    /**
       * `All docs`
       */
     ["com.affine.all-pages.header"](): string;
@@ -991,6 +1022,42 @@ export function useAFFiNEI18N(): {
       * `Display the menubar app in the tray for quick access to AFFiNE or meeting recordings.`
       */
     ["com.affine.appearanceSettings.menubar.description"](): string;
+    /**
+      * `Window behavior`
+      */
+    ["com.affine.appearanceSettings.menubar.windowBehavior.title"](): string;
+    /**
+      * `Quick open from tray icon`
+      */
+    ["com.affine.appearanceSettings.menubar.windowBehavior.openOnLeftClick.toggle"](): string;
+    /**
+      * `Open AFFiNE when left‑clicking the tray icon.`
+      */
+    ["com.affine.appearanceSettings.menubar.windowBehavior.openOnLeftClick.description"](): string;
+    /**
+      * `Minimize to tray`
+      */
+    ["com.affine.appearanceSettings.menubar.windowBehavior.minimizeToTray.toggle"](): string;
+    /**
+      * `Minimize AFFiNE to the system tray.`
+      */
+    ["com.affine.appearanceSettings.menubar.windowBehavior.minimizeToTray.description"](): string;
+    /**
+      * `Close to tray`
+      */
+    ["com.affine.appearanceSettings.menubar.windowBehavior.closeToTray.toggle"](): string;
+    /**
+      * `Close AFFiNE to the system tray.`
+      */
+    ["com.affine.appearanceSettings.menubar.windowBehavior.closeToTray.description"](): string;
+    /**
+      * `Start minimized`
+      */
+    ["com.affine.appearanceSettings.menubar.windowBehavior.startMinimized.toggle"](): string;
+    /**
+      * `Start AFFiNE minimized to the system tray.`
+      */
+    ["com.affine.appearanceSettings.menubar.windowBehavior.startMinimized.description"](): string;
     /**
       * `Theme`
       */
@@ -2376,6 +2443,14 @@ export function useAFFiNEI18N(): {
       */
     ["com.affine.import.affine-workspace-data"](): string;
     /**
+      * `Docx`
+      */
+    ["com.affine.import.docx"](): string;
+    /**
+      * `Import your .docx file.`
+      */
+    ["com.affine.import.docx.tooltip"](): string;
+    /**
       * `HTML`
       */
     ["com.affine.import.html-files"](): string;
@@ -2771,6 +2846,10 @@ export function useAFFiNEI18N(): {
       * `Star us on GitHub`
       */
     ["com.affine.mobile.setting.others.github"](): string;
+    /**
+      * `Discord Group`
+      */
+    ["com.affine.mobile.setting.others.discord"](): string;
     /**
       * `Privacy`
       */
@@ -5340,6 +5419,14 @@ export function useAFFiNEI18N(): {
       */
     ["com.affine.settings.editorSettings.general.font-family.title"](): string;
     /**
+      * `Adjust the base font size for better readability.`
+      */
+    ["com.affine.settings.editorSettings.general.font-size.description"](): string;
+    /**
+      * `Font size`
+      */
+    ["com.affine.settings.editorSettings.general.font-size.title"](): string;
+    /**
       * `Automatically detect and correct spelling errors.`
       */
     ["com.affine.settings.editorSettings.general.spell-check.description"](): string;
@@ -6291,6 +6378,14 @@ export function useAFFiNEI18N(): {
       */
     ["com.affine.settings.workspace.sharing.url-preview.title"](): string;
     /**
+      * `Control whether pages in this workspace can be shared publicly. Turn off to block new shares and external access for existing shares.`
+      */
+    ["com.affine.settings.workspace.sharing.workspace-sharing.description"](): string;
+    /**
+      * `Allow workspace page sharing`
+      */
+    ["com.affine.settings.workspace.sharing.workspace-sharing.title"](): string;
+    /**
       * `AFFiNE AI`
       */
     ["com.affine.settings.workspace.affine-ai.title"](): string;
@@ -6549,6 +6644,10 @@ export function useAFFiNEI18N(): {
       * `Anyone can access this link`
       */
     ["com.affine.share-menu.option.link.readonly.description"](): string;
+    /**
+      * `Sharing for this workspace is turned off. Please contact an admin to enable it.`
+      */
+    ["com.affine.share-menu.workspace-sharing.disabled.tooltip"](): string;
     /**
       * `Can manage`
       */
@@ -7178,6 +7277,10 @@ export function useAFFiNEI18N(): {
       * `All docs`
       */
     ["com.affine.workspaceSubPath.all"](): string;
+    /**
+      * `Intelligence`
+      */
+    ["com.affine.workspaceSubPath.chat"](): string;
     /**
       * `Trash`
       */
@@ -8159,17 +8262,9 @@ export function useAFFiNEI18N(): {
       */
     ["com.affine.integration.calendar.new-url-label"](): string;
     /**
-      * `This is a duplicate calendar`
+      * `An error occurred while saving the calendar settings`
       */
-    ["com.affine.integration.calendar.new-duplicate-error-title"](): string;
-    /**
-      * `This subscription calendar already exists in the account of subscribed calendars.`
-      */
-    ["com.affine.integration.calendar.new-duplicate-error-content"](): string;
-    /**
-      * `An error occurred while adding the calendar`
-      */
-    ["com.affine.integration.calendar.new-error"](): string;
+    ["com.affine.integration.calendar.save-error"](): string;
     /**
       * `All day`
       */
@@ -8196,6 +8291,16 @@ export function useAFFiNEI18N(): {
     ["com.affine.integration.calendar.unsubscribe-content"](options: {
         readonly name: string;
     }): string;
+    /**
+      * `No journal page found for {{date}}. Please create a journal page first.`
+      */
+    ["com.affine.integration.calendar.no-journal"](options: {
+        readonly date: string;
+    }): string;
+    /**
+      * `No subscribed calendars yet.`
+      */
+    ["com.affine.integration.calendar.no-calendar"](): string;
     /**
       * `MCP Server`
       */
@@ -8488,10 +8593,6 @@ export function useAFFiNEI18N(): {
       */
     ["error.WRONG_SIGN_IN_METHOD"](): string;
     /**
-      * `You don't have early access permission. Visit https://community.affine.pro/c/insider-general/ for more information.`
-      */
-    ["error.EARLY_ACCESS_REQUIRED"](): string;
-    /**
       * `You are not allowed to sign up.`
       */
     ["error.SIGN_UP_FORBIDDEN"](): string;
@@ -8624,6 +8725,10 @@ export function useAFFiNEI18N(): {
         blobId: string;
         spaceId: string;
     }>): string;
+    /**
+      * `Blob is invalid.`
+      */
+    ["error.BLOB_INVALID"](): string;
     /**
       * `Expected to publish a doc, not a Space.`
       */
@@ -8763,6 +8868,13 @@ export function useAFFiNEI18N(): {
       * `This subscription is managed by App Store or Google Play. Please manage it in the corresponding store.`
       */
     ["error.MANAGED_BY_APP_STORE_OR_PLAY"](): string;
+    /**
+      * `Calendar provider request error, status: {{status}}, message: {{message}}`
+      */
+    ["error.CALENDAR_PROVIDER_REQUEST_ERROR"](options: Readonly<{
+        status: string;
+        message: string;
+    }>): string;
     /**
       * `Copilot session not found.`
       */

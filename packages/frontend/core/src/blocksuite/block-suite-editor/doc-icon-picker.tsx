@@ -6,13 +6,19 @@ import { useLiveData, useService } from '@toeverything/infra';
 
 import * as styles from './doc-icon-picker.css';
 
-const TitleContainer = ({ children }: { children: React.ReactNode }) => {
+const TitleContainer = ({
+  children,
+  hasIcon,
+}: {
+  children: React.ReactNode;
+  hasIcon: boolean;
+}) => {
   return (
     <div
       className="doc-icon-container"
+      data-has-icon={hasIcon ? 'true' : 'false'}
       style={{
-        paddingTop: 0,
-        paddingBottom: 0,
+        paddingBottom: 8,
       }}
     >
       {children}
@@ -46,7 +52,7 @@ export const DocIconPicker = ({
   }
 
   return (
-    <TitleContainer>
+    <TitleContainer hasIcon={!isPlaceholder}>
       <IconEditor
         icon={icon?.icon}
         onIconChange={data => {

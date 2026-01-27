@@ -25,6 +25,7 @@ import type { PromptKey } from '../provider/prompt';
 
 export const translateLangs = [
   'English',
+  'Brazilian Portuguese',
   'Spanish',
   'German',
   'French',
@@ -141,7 +142,6 @@ declare global {
     interface ChatOptions extends AITextActionOptions {
       sessionId?: string;
       isRootSession?: boolean;
-      webSearch?: boolean;
       reasoning?: boolean;
       modelId?: string;
       toolsConfig?: AIToolsConfig | undefined;

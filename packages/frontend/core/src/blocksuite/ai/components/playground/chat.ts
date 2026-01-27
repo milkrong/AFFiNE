@@ -1,4 +1,9 @@
 import type { AIToolsConfigService } from '@affine/core/modules/ai-button';
+import type { AIModelService } from '@affine/core/modules/ai-button/services/models';
+import type {
+  ServerService,
+  SubscriptionService,
+} from '@affine/core/modules/cloud';
 import type { WorkspaceDialogService } from '@affine/core/modules/dialogs';
 import type { FeatureFlagService } from '@affine/core/modules/feature-flag';
 import type { AppThemeService } from '@affine/core/modules/theme';
@@ -19,16 +24,12 @@ import { createRef, type Ref, ref } from 'lit/directives/ref.js';
 import { throttle } from 'lodash-es';
 
 import type { AppSidebarConfig } from '../../chat-panel/chat-config';
-import { HISTORY_IMAGE_ACTIONS } from '../../chat-panel/const';
 import { AIProvider } from '../../provider';
+import { HISTORY_IMAGE_ACTIONS } from '../../utils/history-image-actions';
 import type { SearchMenuConfig } from '../ai-chat-add-context';
 import type { DocDisplayConfig } from '../ai-chat-chips';
 import type { ChatContextValue } from '../ai-chat-content';
-import type {
-  AINetworkSearchConfig,
-  AIPlaygroundConfig,
-  AIReasoningConfig,
-} from '../ai-chat-input';
+import type { AIPlaygroundConfig, AIReasoningConfig } from '../ai-chat-input';
 import {
   type AIChatMessages,
   type ChatAction,
@@ -147,9 +148,6 @@ export class PlaygroundChat extends SignalWatcher(
   accessor session!: CopilotChatHistoryFragment | null | undefined;
 
   @property({ attribute: false })
-  accessor networkSearchConfig!: AINetworkSearchConfig;
-
-  @property({ attribute: false })
   accessor reasoningConfig!: AIReasoningConfig;
 
   @property({ attribute: false })
@@ -168,6 +166,9 @@ export class PlaygroundChat extends SignalWatcher(
   accessor extensions!: ExtensionType[];
 
   @property({ attribute: false })
+  accessor serverService!: ServerService;
+
+  @property({ attribute: false })
   accessor affineFeatureFlagService!: FeatureFlagService;
 
   @property({ attribute: false })
@@ -181,6 +182,12 @@ export class PlaygroundChat extends SignalWatcher(
 
   @property({ attribute: false })
   accessor aiToolsConfigService!: AIToolsConfigService;
+
+  @property({ attribute: false })
+  accessor subscriptionService!: SubscriptionService;
+
+  @property({ attribute: false })
+  accessor aiModelService!: AIModelService;
 
   @property({ attribute: false })
   accessor onAISubscribe: (() => Promise<void>) | undefined;
@@ -355,7 +362,6 @@ export class PlaygroundChat extends SignalWatcher(
         .affineThemeService=${this.affineThemeService}
         .notificationService=${this.notificationService}
         .aiToolsConfigService=${this.aiToolsConfigService}
-        .networkSearchConfig=${this.networkSearchConfig}
         .reasoningConfig=${this.reasoningConfig}
         .messages=${this.messages}
       ></ai-chat-messages>
@@ -368,15 +374,17 @@ export class PlaygroundChat extends SignalWatcher(
         .chatContextValue=${this.chatContextValue}
         .updateContext=${this.updateContext}
         .onEmbeddingProgressChange=${this.onEmbeddingProgressChange}
-        .networkSearchConfig=${this.networkSearchConfig}
         .reasoningConfig=${this.reasoningConfig}
         .playgroundConfig=${this.playgroundConfig}
         .docDisplayConfig=${this.docDisplayConfig}
         .searchMenuConfig=${this.searchMenuConfig}
+        .serverService=${this.serverService}
         .notificationService=${this.notificationService}
         .aiToolsConfigService=${this.aiToolsConfigService}
         .affineWorkspaceDialogService=${this.affineWorkspaceDialogService}
         .affineFeatureFlagService=${this.affineFeatureFlagService}
+        .subscriptionService=${this.subscriptionService}
+        .aiModelService=${this.aiModelService}
         .onAISubscribe=${this.onAISubscribe}
       ></ai-chat-composer>
     </div>`;

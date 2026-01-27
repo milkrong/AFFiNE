@@ -1,8 +1,12 @@
 import type { AIToolsConfigService } from '@affine/core/modules/ai-button';
 import type { AIModelService } from '@affine/core/modules/ai-button/services/models';
-import type { SubscriptionService } from '@affine/core/modules/cloud';
+import type {
+  ServerService,
+  SubscriptionService,
+} from '@affine/core/modules/cloud';
 import {
   type CopilotChatHistoryFragment,
+  ServerDeploymentType,
   SubscriptionStatus,
 } from '@affine/graphql';
 import {
@@ -20,7 +24,6 @@ import {
   DoneIcon,
   LockIcon,
   ThinkingIcon,
-  WebIcon,
 } from '@blocksuite/icons/lit';
 import { ShadowlessElement } from '@blocksuite/std';
 import { computed } from '@preact/signals-core';
@@ -97,18 +100,8 @@ export class ChatInputPreference extends SignalWatcher(
     | undefined;
   // --------- extended thinking props end ---------
 
-  // --------- search props start ---------
   @property({ attribute: false })
-  accessor networkSearchVisible: boolean = false;
-
-  @property({ attribute: false })
-  accessor isNetworkActive: boolean = false;
-
-  @property({ attribute: false })
-  accessor onNetworkActiveChange:
-    | ((isNetworkActive: boolean) => void)
-    | undefined;
-  // --------- search props end ---------
+  accessor serverService!: ServerService;
 
   @property({ attribute: false })
   accessor toolsConfigService!: AIToolsConfigService;
@@ -153,6 +146,9 @@ export class ChatInputPreference extends SignalWatcher(
         options: {
           items: this.aiModelService.models.value.map(model => {
             const isSelected = model.id === this.model.value?.id;
+            const isSelfHosted =
+              this.serverService.server.config$.value?.type ===
+              ServerDeploymentType.Selfhosted;
             const status =
               this.subscriptionService.subscription.ai$.value?.status;
             const isSubscribed = status === SubscriptionStatus.Active;
@@ -172,7 +168,7 @@ export class ChatInputPreference extends SignalWatcher(
                 </div>
               `,
               select: () => {
-                if (model.isPro && !isSubscribed) {
+                if (model.isPro && !isSelfHosted && !isSubscribed) {
                   this.notificationService.toast(
                     `Pro models require an AFFiNE AI subscription.`
                   );
@@ -196,31 +192,21 @@ export class ChatInputPreference extends SignalWatcher(
       })
     );
 
-    if (this.networkSearchVisible) {
-      searchItems.push(
-        menu.toggleSwitch({
-          name: 'Web Search',
-          prefix: WebIcon(),
-          on: this.isNetworkActive,
-          onChange: (value: boolean) => this.onNetworkActiveChange?.(value),
-          class: { 'preference-action': true },
-          testId: 'chat-network-search',
-        }),
-        menu.toggleSwitch({
-          name: 'Workspace All Docs',
-          prefix: CloudWorkspaceIcon(),
-          on:
-            !!this.toolsConfigService.config.value.searchWorkspace &&
-            !!this.toolsConfigService.config.value.readingDocs,
-          onChange: (value: boolean) =>
-            this.toolsConfigService.setConfig({
-              searchWorkspace: value,
-              readingDocs: value,
-            }),
-          class: { 'preference-action': true },
-        })
-      );
-    }
+    searchItems.push(
+      menu.toggleSwitch({
+        name: 'Workspace All Docs',
+        prefix: CloudWorkspaceIcon(),
+        on:
+          !!this.toolsConfigService.config.value.searchWorkspace &&
+          !!this.toolsConfigService.config.value.readingDocs,
+        onChange: (value: boolean) =>
+          this.toolsConfigService.setConfig({
+            searchWorkspace: value,
+            readingDocs: value,
+          }),
+        class: { 'preference-action': true },
+      })
+    );
 
     popMenu(popupTargetFromElement(element), {
       options: {
